@@ -129,5 +129,8 @@ pre-build:
 
 post-install:
 	${MV} ${STAGEDIR}${DATADIR}/scenes ${STAGEDIR}${EXAMPLESDIR}
+.for i in povray.conf povray.ini
+	${MV} ${STAGEDIR}${ETCDIR}/${i} ${STAGEDIR}${ETCDIR}/${i}.sample
+.endfor
 
 .include <bsd.port.mk>

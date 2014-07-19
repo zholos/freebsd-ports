@@ -1,7 +1,7 @@
 bin/povray37
 man/man1/povray37.1.gz
-%%ETCDIR%%/povray.conf
-%%ETCDIR%%/povray.ini
+@sample %%ETCDIR%%/povray.conf.sample
+@sample %%ETCDIR%%/povray.ini.sample
 %%X11%%%%DATADIR%%/icons/file_inc_classic_16.png
 %%X11%%%%DATADIR%%/icons/file_inc_classic_32.png
 %%X11%%%%DATADIR%%/icons/file_inc_classic_48.png
@@ -119,8 +119,8 @@ man/man1/povray37.1.gz
 %%DATADIR%%/scripts/render_scene.sh
 %%DATADIR%%/scripts/rerunpov.sh
 %%DATADIR%%/scripts/runpov.sh
-@dirrm %%ETCDIR%%
-@dirrm etc/povray
+@dirrmtry %%ETCDIR%%
+@dirrmtry etc/povray
 @dirrm %%DATADIR%%/scripts
 @dirrm %%DATADIR%%/ini
 @dirrm %%DATADIR%%/include
