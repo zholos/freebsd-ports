@@ -115,12 +115,6 @@ PORTDOCS=	*
 PORTEXAMPLES=	*
 
 post-patch:
-# Fix with boost 1.52 and now boost 1.55
-	@${REINPLACE_CMD} -e 's/TIME_UTC/TIME_UTC_/g' ${WRKSRC}/source/backend/scene/view.cpp \
-		${WRKSRC}/source/base/timer.cpp \
-		${WRKSRC}/vfe/vfepovms.cpp \
-		${WRKSRC}/vfe/unix/platformbase.cpp \
-		${WRKSRC}/vfe/vfesession.cpp
 	${FIND} ${WRKSRC}/source/*end \( -name \*.h -o -name \*.cpp \) | \
 		${XARGS} ${GREP} -l shared_ptr | ${SED} '/shellout/d' | \
 		${XARGS} ${REINPLACE_CMD} -e 's|shared_ptr|boost::shared_ptr|g'
