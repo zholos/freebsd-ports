@@ -116,9 +116,9 @@ PORTDOCS=	*
 PORTEXAMPLES=	*
 
 post-patch:
-	${FIND} ${WRKSRC}/source/*end \( -name \*.h -o -name \*.cpp \) | \
-		${XARGS} ${GREP} -l shared_ptr | ${SED} '/shellout/d' | \
-		${XARGS} ${REINPLACE_CMD} -e 's|shared_ptr|boost::shared_ptr|g'
+	${FIND} ${WRKSRC}/source ${WRKSRC}/unix ${WRKSRC}/vfe \( -name \*.h -o -name \*.cpp \) \
+		-exec ${GREP} -q shared_ptr {} \; -exec ${REINPLACE_CMD} -E \
+		's/^/ /;s/([^:])((shared_ptr|weak_ptr)<)/\1std::tr1::\2/g;s/^ //' {} \;
 
 pre-configure:
 	cd ${WRKSRC}/unix && ./prebuild.sh
