@@ -124,7 +124,7 @@ pre-configure:
 pre-build:
 .if ${PORT_OPTIONS:MSTATIC} && ${PORT_OPTIONS:MTIFF}
 #	graphics/tiff adds dependencies on libjpeg and libjbig
-	@${REINPLACE_CMD} -e 's,^\(LIBS = .*\)-ltiff\(.*\),\1-ltiff -ljpeg -ljbig\2,' ${WRKSRC}/unix/Makefile
+	@${REINPLACE_CMD} -e 's,^\(LIBS = .*\)-ltiff\(.*\),\1-ltiff -ljpeg -ljbig -llzma\2,' ${WRKSRC}/unix/Makefile
 .endif
 
 post-install:
