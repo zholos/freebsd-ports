@@ -110,7 +110,6 @@ BROKEN=		Does not compile on sparc64: thread-local storage not supported
 
 MAN1=		${PORTNAME}${PKGNAMESUFFIX}.1
 
-DOC_FILES=	AUTHORS ChangeLog NEWS
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
@@ -128,28 +127,7 @@ pre-build:
 	@${REINPLACE_CMD} -e 's,^\(LIBS = .*\)-ltiff\(.*\),\1-ltiff -ljpeg -ljbig\2,' ${WRKSRC}/unix/Makefile
 .endif
 
-do-install:
-	@${INSTALL_PROGRAM} ${WRKSRC}/unix/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}${PKGNAMESUFFIX}
-	@${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/${MAN1}
-	@${MKDIR} ${STAGEDIR}${ETCDIR}
-	@${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.conf ${STAGEDIR}${ETCDIR}
-	@${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.ini ${STAGEDIR}${ETCDIR}
-.for i in include ini scripts
-	${MKDIR} ${STAGEDIR}${DATADIR}/$i
-	cd ${WRKSRC}/$i && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/$i
-.endfor
-.if ${PORT_OPTIONS:MX11}
-	@${MKDIR} ${STAGEDIR}${DATADIR}/icons
-	cd ${WRKSRC}/icons && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/icons
-.endif
-.if ${PORT_OPTIONS:MEXAMPLES}
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	cd ${WRKSRC}/scenes && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
-.endif
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${WRKSRC} && ${INSTALL_DATA} ${DOC_FILES} ${STAGEDIR}${DOCSDIR}
-	cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
-.endif
+post-install:
+	${MV} ${STAGEDIR}${DATADIR}/scenes ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>
