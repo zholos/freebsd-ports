@@ -25,6 +25,7 @@ EXAMPLES_DESC=	Install example scenes
 DOCS_DESC=	Install HTML documentation
 
 USES=		gmake
+USE_AUTOTOOLS=	autoconf:env automake:env
 GNU_CONFIGURE=	yes
 
 VERSION_BASE=	${PORTVERSION:C/([0-9]+\.[0-9]+).*/\1/}
@@ -123,6 +124,9 @@ post-patch:
 	${FIND} ${WRKSRC}/source/*end \( -name \*.h -o -name \*.cpp \) | \
 		${XARGS} ${GREP} -l shared_ptr | ${SED} '/shellout/d' | \
 		${XARGS} ${REINPLACE_CMD} -e 's|shared_ptr|boost::shared_ptr|g'
+
+pre-configure:
+	cd ${WRKSRC}/unix && ./prebuild.sh
 
 pre-build:
 .if ${PORT_OPTIONS:MSTATIC} && ${PORT_OPTIONS:MTIFF}
