@@ -115,11 +115,6 @@ MAN1=		${PORTNAME}${PKGNAMESUFFIX}.1
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
-post-patch:
-	${FIND} ${WRKSRC}/source ${WRKSRC}/unix ${WRKSRC}/vfe \( -name \*.h -o -name \*.cpp \) \
-		-exec ${GREP} -q shared_ptr {} \; -exec ${REINPLACE_CMD} -E \
-		's/^/ /;s/([^:])((shared_ptr|weak_ptr)<)/\1std::tr1::\2/g;s/^ //' {} \;
-
 pre-configure:
 	cd ${WRKSRC}/unix && ./prebuild.sh
 
