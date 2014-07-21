@@ -14,7 +14,7 @@ LIB_DEPENDS=	libboost_thread.so:${PORTSDIR}/devel/boost-libs
 USE_GITHUB=	yes
 GH_ACCOUNT=	POV-Ray
 GH_PROJECT=	povray
-GH_COMMIT=	08c53d8
+GH_COMMIT=	9b10411
 GH_TAGNAME=	${GH_COMMIT}
 
 CONFLICTS_INSTALL=	povray37-3.7.0
