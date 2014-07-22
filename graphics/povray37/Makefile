@@ -117,6 +117,9 @@ post-patch:
 	${FIND} ${WRKSRC}/source/*end \( -name \*.h -o -name \*.cpp \) | \
 		${XARGS} ${GREP} -l shared_ptr | ${SED} '/shellout/d' | \
 		${XARGS} ${REINPLACE_CMD} -e 's|shared_ptr|boost::shared_ptr|g'
+	${REINPLACE_CMD} -e 's|@@EXAMPLESDIR@@|${EXAMPLESDIR}|' \
+		-e 's|@@ETCDIR@@|${ETCDIR}|' \
+		${WRKSRC}/unix/povray.conf
 
 pre-configure:
 	cd ${WRKSRC}/unix && ./prebuild.sh
