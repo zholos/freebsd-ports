@@ -1,0 +1,9 @@
+The uhidvkbdd daemon is a simple way to get media keys on some keyboards
+working in X11. Such keyboards present separate interfaces: a basic USB
+keyboard which is handled by the kernel ukbd(4) driver and a USB HID
+device that reports the media keys which is handled by the generic
+uhid(4) driver.  uhidvkbdd reads consumer control inputs from the latter
+and translates them via vkbd(4) into conventional media keyboard scan-
+codes, which are mapped in X11 by default.
+
+WWW: http://althenia.net/uhidvkbdd
