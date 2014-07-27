@@ -1,0 +1,6 @@
+dedup finds and deletes duplicate files.
+
+It can also list duplicate or unique files without deleting them and
+compare two directory trees.
+
+WWW: http://althenia.net/dedup
