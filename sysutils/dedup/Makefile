@@ -10,7 +10,7 @@ COMMENT=	Delete duplicate files
 
 LICENSE=	MIT
 
-USE_PYTHON=	yes
+USES=		python
 NO_BUILD=	yes
 
 PLIST_FILES=	bin/dedup man/man1/dedup.1.gz
