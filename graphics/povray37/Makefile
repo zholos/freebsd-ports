@@ -14,7 +14,6 @@ LIB_DEPENDS=	libboost_thread.so:${PORTSDIR}/devel/boost-libs
 USE_GITHUB=	yes
 GH_ACCOUNT=	POV-Ray
 GH_PROJECT=	povray
-GH_COMMIT=	392510a
 GH_TAGNAME=	v3.7.0.0
 
 OPTIONS_DEFINE=	X11 PNG JPEG TIFF OPENEXR STATIC IO EXAMPLES DOCS
@@ -71,9 +70,9 @@ CONFIGURE_ARGS+=--without-libpng
 
 .if ${PORT_OPTIONS:MJPEG}
 .if ${PORT_OPTIONS:MSTATIC}
-BUILD_DEPENDS+=	jpeg>=6b:${PORTSDIR}/graphics/jpeg
+USES+=		jpeg:build
 .else
-LIB_DEPENDS+=	libjpeg.so:${PORTSDIR}/graphics/jpeg
+USES+=		jpeg
 .endif
 .else
 CONFIGURE_ARGS+=--without-libjpeg

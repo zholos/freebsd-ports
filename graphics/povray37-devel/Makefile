@@ -14,8 +14,7 @@ LIB_DEPENDS=	libboost_thread.so:${PORTSDIR}/devel/boost-libs
 USE_GITHUB=	yes
 GH_ACCOUNT=	POV-Ray
 GH_PROJECT=	povray
-GH_COMMIT=	9b10411
-GH_TAGNAME=	${GH_COMMIT}
+GH_TAGNAME=	9b10411
 
 CONFLICTS_INSTALL=	povray37-3.7.0
 
@@ -73,9 +72,9 @@ CONFIGURE_ARGS+=--without-libpng
 
 .if ${PORT_OPTIONS:MJPEG}
 .if ${PORT_OPTIONS:MSTATIC}
-BUILD_DEPENDS+=	jpeg>=6b:${PORTSDIR}/graphics/jpeg
+USES+=		jpeg:build
 .else
-LIB_DEPENDS+=	libjpeg.so:${PORTSDIR}/graphics/jpeg
+USES+=		jpeg
 .endif
 .else
 CONFIGURE_ARGS+=--without-libjpeg
