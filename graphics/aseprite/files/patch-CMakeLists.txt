@@ -1,0 +1,10 @@
+--- CMakeLists.txt
++++ CMakeLists.txt
+@@ -209,6 +209,7 @@ if(WITH_WEBP_SUPPORT)
+     if(NOT WEBP_FOUND)
+       message(FATAL_ERROR "libwebp not found")
+     endif()
++    link_directories(${WEBP_LIBRARY_DIRS})
+   else()
+     set(WEBP_LIBRARIES webp)
+     set(WEBP_INCLUDE_DIR ${LIBWEBP_DIR}/src)

@@ -16,16 +16,17 @@ LICENSE_PERMS=		dist-mirror pkg-mirror auto-accept
 
 EXTRACT_DEPENDS=	${NONEXISTENT}:x11/pixman:extract
 LIB_DEPENDS=		libfreetype.so:print/freetype2 \
-			liballeg.so:devel/allegro \
 			libpng.so:graphics/png \
 			libgif.so:graphics/giflib \
 			libcurl.so:ftp/curl \
 			libtinyxml.so:textproc/tinyxml
 
-OPTIONS_DEFINE=		WEBP
-OPTIONS_DEFAULT=	WEBP
+OPTIONS_DEFINE=		WEBP BUNDLED_ALLEGRO
+OPTIONS_DEFAULT=	WEBP BUNDLED_ALLEGRO
+BUNDLED_ALLEGRO_DESC=	Use bundled fork of Allegro (window resizing)
 
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
+BUNDLED_ALLEGRO_LIB_DEPENDS_OFF=	liballeg.so:devel/allegro
 
 USE_GITHUB=		yes
 GH_TUPLE=		aseprite:clip:3e9533e:clip/src/clip
@@ -39,7 +40,7 @@ GH_TUPLE+=		dacap:observable:83dfe27:observable/src/observable
 USES=			cmake:outsource compiler:c++11-lib jpeg ninja pkgconfig
 USE_XORG=		x11 xcursor xext xpm ice pixman sm xxf86dga xxf86vm
 
-CMAKE_ARGS+=		-DUSE_SHARED_ALLEGRO4=1
+BUNDLED_ALLEGRO_CMAKE_BOOL_OFF=USE_SHARED_ALLEGRO4
 CMAKE_ARGS+=		-DUSE_SHARED_GIFLIB=1
 CMAKE_ARGS+=		-DUSE_SHARED_ZLIB=1
 CMAKE_ARGS+=		-DUSE_SHARED_JPEGLIB=1
