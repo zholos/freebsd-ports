@@ -40,6 +40,7 @@ man/man1/povray37.1.gz
 %%DATADIR%%/include/cedar.map
 %%DATADIR%%/include/chars.inc
 %%DATADIR%%/include/colors.inc
+%%DATADIR%%/include/colors_ral.inc
 %%DATADIR%%/include/consts.inc
 %%DATADIR%%/include/crystal.ttf
 %%DATADIR%%/include/cyrvetic.ttf
