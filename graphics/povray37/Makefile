@@ -11,7 +11,7 @@ COMMENT=	Persistence of Vision Ray Tracer
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 
-BROKEN_powerpc64=	Does not build
+BROKEN_powerpc64=	Does not build: c++: Internal error: Killed (program cc1plus)
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	POV-Ray
