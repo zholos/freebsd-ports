@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	povray
-DISTVERSION=	3.7.0.5
 DISTVERSIONPREFIX=	v
+DISTVERSION=	3.7.0.5
 CATEGORIES=	graphics
 PKGNAMESUFFIX=	37
 DIST_SUBDIR=	${PORTNAME}${PKGNAMESUFFIX}
@@ -24,8 +24,7 @@ IO_DESC=	Without I/O restrictions (security risk)
 EXAMPLES_DESC=	Install example scenes
 DOCS_DESC=	Install HTML documentation
 
-USES=		gmake
-USE_AUTOTOOLS=	autoconf:env automake:env
+USES=		gmake autoreconf:build
 GNU_CONFIGURE=	yes
 
 VERSION_BASE=	${PORTVERSION:C/([0-9]+\.[0-9]+).*/\1/}
@@ -104,8 +103,6 @@ CONFIGURE_ARGS+=--without-openexr
 CONFIGURE_ARGS+=NON_REDISTRIBUTABLE_BUILD=yes
 .endif
 
-MAN1=		${PORTNAME}${PKGNAMESUFFIX}.1
-
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
@@ -119,7 +116,7 @@ pre-configure:
 
 pre-build:
 .if ${PORT_OPTIONS:MSTATIC} && ${PORT_OPTIONS:MTIFF}
-#	graphics/tiff adds dependencies on libjpeg and libjbig
+#	graphics/tiff adds dependencies on libjpeg, libjbig and liblzma
 	@${REINPLACE_CMD} -e 's,^\(LIBS = .*\)-ltiff\(.*\),\1-ltiff -ljpeg -ljbig -llzma\2,' ${WRKSRC}/unix/Makefile
 .endif
 
