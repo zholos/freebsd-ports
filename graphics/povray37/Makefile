@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	povray
-DISTVERSION=	3.7.0
+DISTVERSION=	3.7.0.5
+DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
 PKGNAMESUFFIX=	37
 DIST_SUBDIR=	${PORTNAME}${PKGNAMESUFFIX}
@@ -15,8 +16,6 @@ BROKEN_powerpc64=	Does not build: c++: Internal error: Killed (program cc1plus)
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	POV-Ray
-GH_PROJECT=	povray
-GH_TAGNAME=	v3.7.0.0
 
 OPTIONS_DEFINE=	X11 PNG JPEG TIFF OPENEXR STATIC IO EXAMPLES DOCS
 OPTIONS_DEFAULT=PNG JPEG
@@ -111,9 +110,6 @@ PORTDOCS=	*
 PORTEXAMPLES=	*
 
 post-patch:
-	${FIND} ${WRKSRC}/source/*end \( -name \*.h -o -name \*.cpp \) | \
-		${XARGS} ${GREP} -l shared_ptr | ${SED} '/shellout/d' | \
-		${XARGS} ${REINPLACE_CMD} -e 's|shared_ptr|boost::shared_ptr|g'
 	${REINPLACE_CMD} -e 's|@@EXAMPLESDIR@@|${EXAMPLESDIR}|' \
 		-e 's|@@ETCDIR@@|${ETCDIR}|' \
 		${WRKSRC}/unix/povray.conf
