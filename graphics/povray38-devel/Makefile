@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	povray
-DISTVERSION=	3.8.0-alpha.9436902
 DISTVERSIONPREFIX=	v
+DISTVERSION=	3.8.0-alpha.9436902
 CATEGORIES=	graphics
 PKGNAMESUFFIX=	38
 DIST_SUBDIR=	${PORTNAME}${PKGNAMESUFFIX}
@@ -12,7 +12,7 @@ COMMENT=	Persistence of Vision Ray Tracer
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 
-BROKEN_powerpc64=	Does not build
+BROKEN_powerpc64=	Does not build: c++: Internal error: Killed (program cc1plus)
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	POV-Ray
@@ -24,8 +24,7 @@ IO_DESC=	Without I/O restrictions (security risk)
 EXAMPLES_DESC=	Install example scenes
 DOCS_DESC=	Install HTML documentation
 
-USES=		gmake
-USE_AUTOTOOLS=	autoconf:env automake:env
+USES=		gmake autoreconf:build
 GNU_CONFIGURE=	yes
 
 VERSION_BASE=	${PORTVERSION:C/([0-9]+\.[0-9]+).*/\1/}
@@ -104,17 +103,20 @@ CONFIGURE_ARGS+=--without-openexr
 CONFIGURE_ARGS+=NON_REDISTRIBUTABLE_BUILD=yes
 .endif
 
-MAN1=		${PORTNAME}${PKGNAMESUFFIX}.1
-
 PORTDOCS=	*
 PORTEXAMPLES=	*
+
+post-patch:
+	${REINPLACE_CMD} -e 's|@@EXAMPLESDIR@@|${EXAMPLESDIR}|' \
+		-e 's|@@ETCDIR@@|${ETCDIR}|' \
+		${WRKSRC}/unix/povray.conf
 
 pre-configure:
 	cd ${WRKSRC}/unix && ./prebuild.sh
 
 pre-build:
 .if ${PORT_OPTIONS:MSTATIC} && ${PORT_OPTIONS:MTIFF}
-#	graphics/tiff adds dependencies on libjpeg and libjbig
+#	graphics/tiff adds dependencies on libjpeg, libjbig and liblzma
 	@${REINPLACE_CMD} -e 's,^\(LIBS = .*\)-ltiff\(.*\),\1-ltiff -ljpeg -ljbig -llzma\2,' ${WRKSRC}/unix/Makefile
 .endif
 
