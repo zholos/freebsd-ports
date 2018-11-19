@@ -5,58 +5,46 @@ DISTVERSIONPREFIX=	v
 DISTVERSION=	3.8.0-alpha.9436902
 CATEGORIES=	graphics
 PKGNAMESUFFIX=	38
-DIST_SUBDIR=	${PORTNAME}${PKGNAMESUFFIX}
 
-MAINTAINER=	bkoenig@alpha-tierchen.de
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Persistence of Vision Ray Tracer
 
-LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
+LICENSE=	AGPLv3+
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_powerpc64=	Does not build: c++: Internal error: Killed (program cc1plus)
 
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
+
+USES=		autoreconf:build gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	POV-Ray
+
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	COMPILED_BY=${MAINTAINER} \
+		--program-transform-name='s/povray/${PKGBASE}/' \
+		--disable-optimiz
+
+VERSION_BASE=	${PORTVERSION:C/([0-9]+\.[0-9]+).*/\1/}
+DATADIR=	${PREFIX}/share/${PORTNAME}-${VERSION_BASE}
+DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${VERSION_BASE}
+ETCDIR=		${PREFIX}/etc/${PORTNAME}/${VERSION_BASE}
+EXAMPLESDIR=	${PREFIX}/share/examples/${PORTNAME}-${VERSION_BASE}
 
 OPTIONS_DEFINE=	X11 PNG JPEG TIFF OPENEXR STATIC IO EXAMPLES DOCS
 OPTIONS_DEFAULT=PNG JPEG
 OPTIONS_SUB=	yes
-IO_DESC=	Without I/O restrictions (security risk)
-EXAMPLES_DESC=	Install example scenes
+
 DOCS_DESC=	Install HTML documentation
+EXAMPLES_DESC=	Install example scenes
+IO_DESC=	Without I/O restrictions (security risk)
 
-USES=		gmake autoreconf:build
-GNU_CONFIGURE=	yes
-
-VERSION_BASE=	${PORTVERSION:C/([0-9]+\.[0-9]+).*/\1/}
-
-DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${VERSION_BASE}
-EXAMPLESDIR=	${PREFIX}/share/examples/${PORTNAME}-${VERSION_BASE}
-DATADIR=	${PREFIX}/share/${PORTNAME}-${VERSION_BASE}
-ETCDIR=		${PREFIX}/etc/${PORTNAME}/${VERSION_BASE}
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib -lboost_system
-
-CONFIGURE_ARGS=	COMPILED_BY=${MAINTAINER} \
-		--program-transform-name='s/${PORTNAME}/${PORTNAME}${PKGNAMESUFFIX}/' \
-		--disable-optimiz
+IO_CONFIGURE_ON=	--disable-io-restrictions
+STATIC_CONFIGURE_ON=	--enable-static
+X11_USE=		XORG=xpm,sm,ice,x11 SDL=sdl
+X11_CONFIGURE_OFF=	--without-x
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MX11}
-USE_XORG=		xpm sm ice x11
-USE_SDL=		sdl
-.else
-CONFIGURE_ARGS+=	--without-x
-.endif
-
-.if ${PORT_OPTIONS:MSTATIC}
-CONFIGURE_ARGS+=--enable-static
-.endif
-
-.if ${PORT_OPTIONS:MIO}
-CONFIGURE_ARGS+=--disable-io-restrictions
-.endif
 
 .if ${PORT_OPTIONS:MPNG}
 .if ${PORT_OPTIONS:MSTATIC}
@@ -90,9 +78,9 @@ CONFIGURE_ARGS+=--without-libtiff
 
 .if ${PORT_OPTIONS:MOPENEXR}
 .if ${PORT_OPTIONS:MSTATIC}
-BUILD_DEPENDS+=	OpenEXR>=1.6:graphics/OpenEXR
+BUILD_DEPENDS+=	openexr>=1.6:graphics/openexr
 .else
-LIB_DEPENDS+=	libIlmImf.so:graphics/OpenEXR
+LIB_DEPENDS+=	libIlmImf.so:graphics/openexr
 CPPFLAGS+=	-I${LOCALBASE}/include/OpenEXR
 .endif
 .else
